@@ -1,4 +1,5 @@
-import { useState, useEffect }from "react";
+import React, { useState, useEffect, Suspense, lazy} from "react";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import "./App.css";
 import materialSymbolsnote1 from "./assets/materialSymbolsnote1.svg";
 import jamwrite from "./assets/jamwrite.svg";
@@ -16,7 +17,19 @@ const initialValues = {
   pere: "",
   mere: "",
   id: 1,
-  bapteme
+  bapteme: "",
+  lieuB: "",
+  dateB: "",
+  numeroB: "",
+  parrainB: "",
+  suppletionB: "",
+  Eucaristie: "",
+  lieuEu: "",
+  dateEu: "",
+
+  confirmation: "",
+  lieuCo: "",
+  dateCo: "",
 };
 const App = () => {
   const [values, setValues] = useState(initialValues);
@@ -49,7 +62,7 @@ const App = () => {
       setError('');
       setSuccess('');
       try {
-        let tx = await contract.setMember("Benji", "Sam","Dad","Mum","25/12/1028", 1);
+        let tx = await contract.setMember("Benji", "Sam", "Dad", "Mum", "25/12/1028", 1);
         await tx.wait();
         setSuccess('Enregistrement effectué avec succes !');
       } catch (err) {
@@ -58,7 +71,7 @@ const App = () => {
       }
     }
   }
-  console.log(values.nom)
+  console.log(values.lieuEu)
 
 
 
@@ -85,56 +98,65 @@ const App = () => {
           <h3 className="identit">Identité</h3>
           <span>Prénom</span>
           <input className="rectangle-1" type="text" name="prenom"
-          value={values.prenom} onChange={handleInputChange} />
+            value={values.prenom} onChange={handleInputChange} />
           <span>Nom</span>
           <input className="rectangle-1" type="text" name="nom"
-          value={values.nom} onChange={handleInputChange}/>
+            value={values.nom} onChange={handleInputChange} />
           <span>Né a </span>
           <input className="rectangle-1" type="text" name="naissance"
-          value={values.naissance} onChange={handleInputChange}/>
+            value={values.naissance} onChange={handleInputChange} />
           <span>Père</span>
           <input className="rectangle-1" type="text" name="pere"
-          value={values.pere} onChange={handleInputChange}/>
+            value={values.pere} onChange={handleInputChange} />
           <span>Mère</span>
           <input className="rectangle-1" type="text" name="mere"
-          value={values.mere} onChange={handleInputChange}/>
+            value={values.mere} onChange={handleInputChange} />
 
-        </div>
+        </div> 
         <div className="flex-container-2">
           <h3>Baptême</h3>
           <span className="lieu">Lieu</span>
-          <input className="rectangle-1-1" type="text" />
+          <input className="rectangle-1-1" type="text" name="lieuB"
+            value={values.lieuB} onChange={handleInputChange} />
           <span className="date">Date</span>
-          <input className="rectangle-1-4" type="text" />
+          <input className="rectangle-1-4" type="text" name="dateB"
+            value={values.dateB} onChange={handleInputChange} />
           <span className="n-rg">N. rég</span>
-          <input className="rectangle-1-7" type="text" />
+          <input className="rectangle-1-7" type="text" name="numeroB"
+            value={values.numeroB} onChange={handleInputChange} />
           <span className="parrain-marr">Parrain (Marr.)</span>
-          <input className="rectangle-1-9" type="text" />
+          <input className="rectangle-1-9" type="text" name="parrainB"
+            value={values.parrainB} onChange={handleInputChange} />
           <span className="suppletion">Suppletion</span>
-          <input className="rectangle-1-12" type="text" />
+          <input className="rectangle-1-12" type="text" name="suppletionB"
+            value={values.suppletionB} onChange={handleInputChange} />
         </div>
         <div className="flex-container-4">
 
           <h3 className="eucharistie">Eucharistie</h3>
 
           <span className="lieu">Lieu</span>
-          <input className="rectangle-1-1" type="text" />
+          <input className="rectangle-1-1" type="text" name="lieuEu"
+            value={values.lieuEu} onChange={handleInputChange} />
           <span className="date-1">Date</span>
-          <input className="rectangle-1-5" type="text" />
+          <input className="rectangle-1-5" type="text" name="dateEu"
+            value={values.dateEu} onChange={handleInputChange}/>
 
           <h3 className="confirmation">Confirmation</h3>
           <span className="lieu-2">Lieu</span>
-          <input className="rectangle-1-10" type="text" />
+          <input className="rectangle-1-10" type="text" name="lieuCo"
+            value={values.lieuCo} onChange={handleInputChange} />
           <span className="date-2">Date</span>
-          <input className="rectangle-1-13" type="text" />
+          <input className="rectangle-1-13" type="text" name="dateCo"
+            value={values.dateCo} onChange={handleInputChange} />
 
         </div>
 
       </div>
-      
+
       <h3 className="mariage">Mariage</h3>
       <div className="flex-box2">
-        
+
         <div className="flex-container-6">
           <span className="paroisse">Paroisse</span>
           <input className="group-17" type="text" />
@@ -176,7 +198,7 @@ const App = () => {
           <input className="rectangle-1-27" type="text" />
         </div>
       </div>
-      
+
       <h3 className="consecration-religie">Consecration religieuse</h3>
       <div className="flex-box3">
         <div className="flex-container-9">
@@ -196,7 +218,7 @@ const App = () => {
           <input className="rectangle-1-33" type="text" />
         </div>
       </div>
-      
+
       <div className="flex-container-17">
       </div>
       <button onClick={setMembre}>
