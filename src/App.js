@@ -16,7 +16,7 @@ const initialValues = {
   naissance: "",
   pere: "",
   mere: "",
-  id: 1,
+  id: "",
   bapteme: "",
   lieuB: "",
   dateB: "",
@@ -59,8 +59,9 @@ const initialValues = {
 };
 const App = () => {
   const [values, setValues] = useState(initialValues);
-
-
+  const [identite, setIdentite] = useState([]);
+  const [singlePerson, setSinglePerson] = useState({});
+  const [identificateur, setIdentificateur] = useState("");
 
 
 
@@ -79,6 +80,32 @@ const App = () => {
       [name]: value,
     });
   };
+
+  const renderIdentity = identite.map((item, index) =>
+
+    <tr key={index}>
+      <td>
+        {item.id}
+      </td>
+      <td>
+        {item.prenom}
+      </td>
+      <td>
+        {item.nom}
+      </td>
+      <td>
+        {item.naissance}
+      </td>
+      <td>
+        {item.pere}
+      </td>
+      <td>
+        {item.mere}
+      </td>
+    </tr>
+
+  );
+
   async function setMembre() {
     if (typeof window.ethereum !== 'undefined') {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -88,18 +115,44 @@ const App = () => {
       setError('');
       setSuccess('');
       try {
-        let tx = await contract.setMember("Benji", "Sam", "Dad", "Mum", "25/12/1028", 1);
+        let tx = await contract.setMember(values.nom,
+          values.prenom, values.pere, values.mere,
+          values.naissance, values.id);
         await tx.wait();
-        setSuccess('Enregistrement effectué avec succes !');
+        setSuccess('Enregistrement effectué avec succes !')
       } catch (err) {
         setError("une erreur est survenue lors   de l'enregistrement de type" + err);
         console.log(err.error.data);
       }
     }
   }
-  console.log(values.vocationCR)
+  async function getMembre() {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(ContractAddress, Diocese.abi, provider);
+      try {
+        const data = await contract.getInfoById(identificateur);
+        setSinglePerson(data);
+        console.log(singlePerson.prenom)
 
+      } catch (err) {
+        setError("une erreur est survenue de type" + err);
+      }
+    }
+  }
+  async function getAllMembre() {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const contract = new ethers.Contract(ContractAddress, Diocese.abi, provider);
+      try {
+        const data = await contract.getAllMember();
+        setIdentite(data);
 
+      } catch (err) {
+        setError("une erreur est survenue de type" + err);
+      }
+    }
+  }
 
 
 
@@ -122,6 +175,10 @@ const App = () => {
       <div className="flex-box">
         <div className="flex-container-1">
           <h3 className="identit">Identité</h3>
+          
+          <span>Identificateur</span>
+          <input className="rectangle-1" type="text" name="id"
+            value={values.id} onChange={handleInputChange} />
           <span>Prénom</span>
           <input className="rectangle-1" type="text" name="prenom"
             value={values.prenom} onChange={handleInputChange} />
@@ -245,7 +302,7 @@ const App = () => {
           <input className="rectangle-1-28" type="text" name="vocationCR"
             value={values.vocationCR} onChange={handleInputChange} />
           <span>Laïc consacré le </span>
-          <input className="rectangle-1-30" type="text"  />
+          <input className="rectangle-1-30" type="text" />
           <span>A fait ses voeux le</span>
           <input className="rectangle-1-32" type="text" name="dateVoeux"
             value={values.dateVoeux} onChange={handleInputChange} />
@@ -270,6 +327,44 @@ const App = () => {
       </button>
       <div>{success}</div>
       <div>{error}</div>
+      <div>
+        <button onClick={getMembre}>voir membre</button>
+      </div>
+      <div id="Tous les membres">
+        <button onClick={getAllMembre}>voir tous les membre</button>
+        <div>
+          <table>
+            <tr>
+              <th>Id</th>
+              <th>
+                prenom
+              </th>
+              <th>
+                nom
+              </th>
+              <th>
+                lieu et date de naissance
+              </th>
+              <th>
+                pere
+              </th>
+              <th>
+                mere
+              </th>
+            </tr>
+            {renderIdentity}
+          </table>
+        </div>
+      </div>
+      <div id="Rechercher membre">
+        <h2>
+          Rechercher un membre de paroisse
+        </h2>
+        <input type="text" value={identificateur} placeholder="Entrer l'identificateur du membre" 
+        onChange={(e) => setIdentificateur(e.target.value)} />
+        <button onClick={getMembre}>Rechercher </button>
+
+      </div>
     </div>
   );
 };

@@ -2,15 +2,14 @@
 pragma solidity 0.8.7;
 contract Diocese {
     struct membre{
-        uint id;
+        string id;
         string nom;
         string prenom;
         string pere;
         string mere;
         string naissance;
         address paroisse;
-    }
-    struct sacrement{
+
         bool bapteme;
         string lieuB;
         string dateB;
@@ -49,8 +48,6 @@ contract Diocese {
         string lieuCR;
         string dateVoeux;
         string lieuVoeux;
-
-
     }
     membre [] public Members;
     sacrement [] internal Sacrement;
@@ -94,20 +91,23 @@ contract Diocese {
     }
 
     function setMember (string memory _nom, string memory prenom,
-                        string memory pere,string memory mere, string memory naissance, uint id) public OnlyParoisse{
+                        string memory pere,string memory mere, string memory naissance, string memory id) public OnlyParoisse{
         address paroisse = msg.sender;
         Members.push(membre(id, _nom, prenom,pere,mere,naissance,paroisse));
     }
 
     function quickSetMember (string memory _nom) public OnlyParoisse{
         address paroisse = msg.sender;
-        Members.push(membre(1, _nom, "Sam","Dad","Mum","25/12/1028", paroisse));
+        Members.push(membre("1", _nom, "Sam","Dad","Mum","25/12/1028", paroisse));
     }
 
-    function getInfoById (uint id) public OnlyParoisse view returns(membre memory){
-        if(Members[id].paroisse == msg.sender) {
-            return Members[id];
-        }
+    function getInfoById (string memory _id) public OnlyParoisse view returns(membre memory){
+            for(uint i =0; i < Members.length; i++) {
+                if(keccak256(abi.encodePacked(Members[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Members[i];
+                }
+            }
+        
     }
 
     function getAllMember () public OnlyParoisse view returns(membre [] memory) {
