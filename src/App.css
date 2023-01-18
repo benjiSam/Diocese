@@ -1,38 +1,108 @@
-.App {
-  text-align: center;
+.container {
+  color: #000;
+  background-color: #fff;
+  flex-direction: column;
+  align-items: stretch;
+  padding-bottom: 80px;
+  font-family: Inter, Arial;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 29px;
+  display: flex;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Navbar {
+  width: 100%;
+  background-color: #72c4ff;
+  flex-direction: row;
+  flex-basis: 3%;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-right: 16px;
+  font-size: 1.25rem;
+  line-height: 24px;
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.paroisse-notre-dame {
+  margin-right: 47px;
+  font-family: Cinzel, Arial;
+  font-size: 1.5rem;
+  line-height: 32px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.enregistrer {
+  margin-top: 2px;
+  margin-left: 453px;
+}
+
+.material-symbolsnote-1 {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  margin-top: 2px;
+}
+
+.rechercher {
+  margin-bottom: 1px;
+}
+
+.material-symbolscont {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.administrer-un-sacre {
+  margin-left: 10px;
+}
+
+.jamwrite {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  margin-bottom: 1px;
+}
+
+.flex-container {
+  width: 40%;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  margin-bottom: 36px;
+  font-size: 2.25rem;
+  line-height: 44px;
+  display: flex;
+  
+}
+
+
+.material-symbolsnote {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.enregistrement-de-me {
+  margin-top: 2px;
+  font-size: 2rem;
+}
+.flex-box, .flex-box2, .flex-box3 {
+  display: flex;
+  margin-bottom: 25px;
+  padding-left: 10px;
+}
+.flex-container-1, .flex-container-2, .flex-container-3, .flex-container-4, .flex-container-5,
+.flex-container-6, .flex-container-7, .flex-container-8, .flex-container-9, .flex-container-10 {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex: 1;
+  padding-right: 15px;
 }
-
-.App-link {
-  color: #61dafb;
+input {
+  height: 25px;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.consecration-religie, .mariage {
+  padding-left: 10px;
 }
