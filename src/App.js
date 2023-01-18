@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy} from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import "./App.css";
 import materialSymbolsnote1 from "./assets/materialSymbolsnote1.svg";
@@ -23,6 +23,7 @@ const initialValues = {
   numeroB: "",
   parrainB: "",
   suppletionB: "",
+
   Eucaristie: "",
   lieuEu: "",
   dateEu: "",
@@ -30,6 +31,31 @@ const initialValues = {
   confirmation: "",
   lieuCo: "",
   dateCo: "",
+
+  mariage: false,
+  numeroM: "",
+  paroisseM: "",
+  partenaireM: "",
+  lieudateBaptPartenaireM: "",
+  numeroBaptPartenaireM: "",
+  dateBenedictionM: "",
+
+  Remariage: false,
+  lieuDecespartM: "",
+  dateDecespartM: "",
+  lieuRemariage: "",
+  dateRemariage: "",
+  numeroRemariage: "",
+  partenaireRemariage: "",
+  lieudateBaptPartenaireR: "",
+  numeroBaptPartenaireR: "",
+
+  consecrationReligieuse: "",
+  vocationCR: "",
+  dateCR: "",
+  lieuCR: "",
+  dateVoeux: "",
+  lieuVoeux: "",
 };
 const App = () => {
   const [values, setValues] = useState(initialValues);
@@ -71,7 +97,7 @@ const App = () => {
       }
     }
   }
-  console.log(values.lieuEu)
+  console.log(values.vocationCR)
 
 
 
@@ -82,7 +108,7 @@ const App = () => {
     <div className="container">
       <div className="Navbar">
         <span className="paroisse-notre-dame">Paroisse notre dame</span>
-        <a href="#" className="enregistrer">Enregistrer</a>
+        <a className="enregistrer">Enregistrer</a>
         <img className="material-symbolsnote-1" alt="icone" src={materialSymbolsnote1} />
         <a className="rechercher">Rechercher</a>
         <img className="material-symbolscont" alt="icone" src={materialSymbolscont} />
@@ -112,7 +138,7 @@ const App = () => {
           <input className="rectangle-1" type="text" name="mere"
             value={values.mere} onChange={handleInputChange} />
 
-        </div> 
+        </div>
         <div className="flex-container-2">
           <h3>Baptême</h3>
           <span className="lieu">Lieu</span>
@@ -140,7 +166,7 @@ const App = () => {
             value={values.lieuEu} onChange={handleInputChange} />
           <span className="date-1">Date</span>
           <input className="rectangle-1-5" type="text" name="dateEu"
-            value={values.dateEu} onChange={handleInputChange}/>
+            value={values.dateEu} onChange={handleInputChange} />
 
           <h3 className="confirmation">Confirmation</h3>
           <span className="lieu-2">Lieu</span>
@@ -159,43 +185,56 @@ const App = () => {
 
         <div className="flex-container-6">
           <span className="paroisse">Paroisse</span>
-          <input className="group-17" type="text" />
+          <input className="group-17" type="text" name="paroisseM"
+            value={values.paroisseM} onChange={handleInputChange} />
           <span className="n-rg-1">N. Rég</span>
-          <input className="rectangle-1-14" type="text" />
+          <input className="rectangle-1-14" type="text" name="numeroM"
+            value={values.numeroM} onChange={handleInputChange} />
           <span className="avec">Avec</span>
-          <input className="rectangle-1-16" type="text" />
+          <input className="rectangle-1-16" type="text" name="partenaireM"
+            value={values.partenaireM} onChange={handleInputChange} />
           <span className="bapteme">Bapteme à</span>
-          <input className="rectangle-1-18" type="text" />
+          <input className="rectangle-1-18" type="text" name="lieudateBaptPartenaireM"
+            value={values.lieudateBaptPartenaireM} onChange={handleInputChange} />
           <span className="n-rg-2">N. Rég</span>
-          <input className="rectangle-1-22" type="text" />
+          <input className="rectangle-1-22" type="text" name="numeroBaptPartenaireM"
+            value={values.numeroBaptPartenaireM} onChange={handleInputChange} />
           <span>Bénédiction nuptiale</span>
-          <input className="rectangle-1-25" type="text" />
+          <input className="rectangle-1-25" type="text" name="dateBenedictionM"
+            value={values.dateBenedictionM} onChange={handleInputChange} />
         </div>
         <div className="flex-container-7">
           <span className="dcs-du-de-la-conjoin">
             Décès du (de la) conjoint(e) à
           </span>
-          <input className="group-25" type="text" />
+          <input className="group-25" type="text" name="lieuDecespartM"
+            value={values.lieuDecespartM} onChange={handleInputChange} />
           <span className="date-du-dcs">Date du décès</span>
-          <input className="rectangle-1-15" type="text" />
+          <input className="rectangle-1-15" type="text" name="dateDecespartM"
+            value={values.dateDecespartM} onChange={handleInputChange} />
           <span className="remariage">Remariage à</span>
-          <input className="rectangle-1-17" type="text" />
+          <input className="rectangle-1-17" type="text" name="lieuRemariage"
+            value={values.lieuRemariage} onChange={handleInputChange} />
           <span className="date-remariage">Date remariage</span>
-          <input className="rectangle-1-19" type="text" />
+          <input className="rectangle-1-19" type="text" name="dateRemariage"
+            value={values.dateRemariage} onChange={handleInputChange} />
           <span className="numero">Numero</span>
-          <input className="rectangle-1-21" type="text" />
+          <input className="rectangle-1-21" type="text" name="numeroRemariage"
+            value={values.numeroRemariage} onChange={handleInputChange} />
           <span className="avec-1">Avec</span>
-          <input className="rectangle-1-23" type="text" />
+          <input className="rectangle-1-23" type="text" name="partenaireRemariage"
+            value={values.partenaireRemariage} onChange={handleInputChange} />
           <span className="baptme">Baptême à</span>
-          <input className="rectangle-1-26" type="text" />
+          <input className="rectangle-1-26" type="text" name="lieudateBaptPartenaireR"
+            value={values.lieudateBaptPartenaireR} onChange={handleInputChange} />
 
         </div>
 
         <div className="flex-container-8">
-          <span className="date-3">Date</span>
-          <input className="rectangle-1-20" type="text" />
-          <span className="numero-1">Numero</span>
-          <input className="rectangle-1-27" type="text" />
+          <span className="baptme">Numero</span>
+          <input className="rectangle-1-26" type="text" name="numeroBaptPartenaireR"
+            value={values.numeroBaptPartenaireR} onChange={handleInputChange} />
+
         </div>
       </div>
 
@@ -203,19 +242,24 @@ const App = () => {
       <div className="flex-box3">
         <div className="flex-container-9">
           <span>Prêtre ordonné le </span>
-          <input className="rectangle-1-28" type="text" />
+          <input className="rectangle-1-28" type="text" name="vocationCR"
+            value={values.vocationCR} onChange={handleInputChange} />
           <span>Laïc consacré le </span>
-          <input className="rectangle-1-30" type="text" />
+          <input className="rectangle-1-30" type="text"  />
           <span>A fait ses voeux le</span>
-          <input className="rectangle-1-32" type="text" />
+          <input className="rectangle-1-32" type="text" name="dateVoeux"
+            value={values.dateVoeux} onChange={handleInputChange} />
         </div>
         <div className="flex-container-10">
           <span className="lieu-3">Lieu</span>
-          <input className="rectangle-1-29" type="text" />
+          <input className="rectangle-1-29" type="text" name="lieuCR"
+            value={values.lieuCR} onChange={handleInputChange} />
           <span className="lieu-4">Lieu</span>
-          <input className="rectangle-1-31" type="text" />
+          <input className="rectangle-1-31" type="text" name="lieuCR"
+            value={values.lieuCR} onChange={handleInputChange} />
           <span className="lieu-5">Lieu</span>
-          <input className="rectangle-1-33" type="text" />
+          <input className="rectangle-1-33" type="text" name="lieuVoeux"
+            value={values.lieuCR} onChange={handleInputChange} />
         </div>
       </div>
 

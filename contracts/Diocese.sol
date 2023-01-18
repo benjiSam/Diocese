@@ -30,8 +30,7 @@ contract Diocese {
         string numeroM;
         string paroisseM;
         string partenaireM;
-        string lieuBaptPartenaireM;
-        string dateBaptPartenaireM;
+        string lieudateBaptPartenaireM;
         string numeroBaptPartenaireM;
         string dateBenedictionM;
 
@@ -41,8 +40,7 @@ contract Diocese {
         string dateRemariage;
         string numeroRemariage;
         string partenaireRemariage;
-        string lieuBaptPartenaireR;
-        string dateBaptPartenaireR;
+        string lieudateBaptPartenaireR;
         string numeroBaptPartenaireR;
 
         bool consecrationReligieuse;
