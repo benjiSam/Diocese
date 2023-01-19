@@ -60,9 +60,12 @@ const initialValues = {
 const App = () => {
   const [values, setValues] = useState(initialValues);
   const [identite, setIdentite] = useState([]);
-  const [singlePerson, setSinglePerson] = useState({});
+  const [singlePerson, setSinglePerson] = useState([]);
   const [identificateur, setIdentificateur] = useState("");
-
+  const [sacrementB, setSacrementB] = useState([]);
+  const [sacrementE, setSacrementE] = useState([]);
+  const [sacrementC, setSacrementC] = useState([]);
+  const [sacrementM, setSacrementM] = useState([]);
 
 
 
@@ -116,11 +119,56 @@ const App = () => {
           values.prenom, values.pere, values.mere,
           values.naissance, values.id);
         await tx.wait();
+        let rx = await contract.setBapteme(values.dateB,
+          values.numeroB, values.parrainB, values.suppletionB, values.id);
+        await rx.wait();
         setSuccess('Enregistrement effectué avec succes !')
       } catch (err) {
         setError("une erreur est survenue lors   de l'enregistrement de type" + err);
         console.log(err.error.data);
       }
+    }
+  }
+  async function setMariage() {
+    if (typeof window.ethereum !== 'undefined') {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(ContractAddress, Diocese.abi, signer);
+      setError('');
+      setSuccess('');
+      /*if (sacrement === 1) {
+        try {
+          let tx = await contract.setEucharistie(values.dateEu, values.id);
+          await tx.wait();
+          setSuccess('Sacrement Eucharistie administré avec succes!')
+        } catch (err) {
+          setError("une erreur est survenue lors de l'administration du sacrement" + err);
+          console.log(err.error.data);
+        }
+      } else if (sacrement === 2) {
+        try {
+          let tx = await contract.setConfirmation(values.dateCo, values.id);
+          await tx.wait();
+          setSuccess('Sacrement Confirmation administré avec succes!')
+        } catch (err) {
+          setError("une erreur est survenue lors de l'administration du sacrement" + err);
+          console.log(err.error.data);
+        }
+      } else if (sacrement === 3) {*/
+        try {
+          let tx = await contract.setMariage(values.numeroM, values.partenaireM,
+            values.lieudateBaptPartenaireM, values.numeroBaptPartenaireM, values.dateBenedictionM,
+            values.id);
+          await tx.wait();
+          setSuccess('Sacrement Mariage administré avec succes!')
+        } catch (err) {
+          setError("une erreur est survenue lors de l'administration du sacrement" + err);
+          console.log(err.error.data);
+        }
+      
+
+
     }
   }
   async function getMembre() {
@@ -129,8 +177,22 @@ const App = () => {
       const contract = new ethers.Contract(ContractAddress, Diocese.abi, provider);
       try {
         const data = await contract.getInfoById(identificateur);
+        const sB = await contract.getBaptById(identificateur);
+        const sE = await contract.getEuchById(identificateur);
+        const sC = await contract.getConfById(identificateur);
+        const sM = await contract.getMarById(identificateur);
         setSinglePerson(data);
-        console.log(singlePerson.prenom)
+        setSacrementB(sB);
+        setSacrementE(sE);
+        setSacrementC(sC);
+        setSacrementM(sM);
+
+        console.log(singlePerson);
+        console.log(sacrementB);
+        console.log(sacrementE);
+        console.log(sacrementC);
+        console.log(sacrementM);
+
 
       } catch (err) {
         setError("une erreur est survenue de type" + err);
@@ -172,7 +234,7 @@ const App = () => {
       <div className="flex-box">
         <div className="flex-container-1">
           <h3 className="identit">Identité</h3>
-          
+
           <span>Identificateur</span>
           <input className="rectangle-1" type="text" name="id"
             value={values.id} onChange={handleInputChange} />
@@ -193,6 +255,7 @@ const App = () => {
             value={values.mere} onChange={handleInputChange} />
 
         </div>
+
         <div className="flex-container-2">
           <h3>Baptême</h3>
           <span className="lieu">Lieu</span>
@@ -210,11 +273,20 @@ const App = () => {
           <span className="suppletion">Suppletion</span>
           <input className="rectangle-1-12" type="text" name="suppletionB"
             value={values.suppletionB} onChange={handleInputChange} />
+          <br />
+          <br />
+          <br />
+          <button onClick={setMembre}>
+            Enregistremet & Bapteme
+          </button>
         </div>
         <div className="flex-container-4">
 
           <h3 className="eucharistie">Eucharistie</h3>
 
+          <span>Identificateur</span>
+          <input className="rectangle-1" type="text" name="id"
+            value={values.id} onChange={handleInputChange} />
           <span className="lieu">Lieu</span>
           <input className="rectangle-1-1" type="text" name="lieuEu"
             value={values.lieuEu} onChange={handleInputChange} />
@@ -222,6 +294,14 @@ const App = () => {
           <input className="rectangle-1-5" type="text" name="dateEu"
             value={values.dateEu} onChange={handleInputChange} />
 
+          <br />
+          <button >
+            Eucharistie
+          </button>
+
+          <span>Identificateur</span>
+          <input className="rectangle-1" type="text" name="id"
+            value={values.id} onChange={handleInputChange} />
           <h3 className="confirmation">Confirmation</h3>
           <span className="lieu-2">Lieu</span>
           <input className="rectangle-1-10" type="text" name="lieuCo"
@@ -229,7 +309,10 @@ const App = () => {
           <span className="date-2">Date</span>
           <input className="rectangle-1-13" type="text" name="dateCo"
             value={values.dateCo} onChange={handleInputChange} />
-
+          <br />
+          <button >
+            Confirmation
+          </button>
         </div>
 
       </div>
@@ -238,6 +321,10 @@ const App = () => {
       <div className="flex-box2">
 
         <div className="flex-container-6">
+
+          <span>Identificateur</span>
+          <input className="rectangle-1" type="text" name="id"
+            value={values.id} onChange={handleInputChange} />
           <span className="paroisse">Paroisse</span>
           <input className="group-17" type="text" name="paroisseM"
             value={values.paroisseM} onChange={handleInputChange} />
@@ -257,6 +344,7 @@ const App = () => {
           <input className="rectangle-1-25" type="text" name="dateBenedictionM"
             value={values.dateBenedictionM} onChange={handleInputChange} />
         </div>
+
         <div className="flex-container-7">
           <span className="dcs-du-de-la-conjoin">
             Décès du (de la) conjoint(e) à
@@ -290,8 +378,12 @@ const App = () => {
             value={values.numeroBaptPartenaireR} onChange={handleInputChange} />
 
         </div>
-      </div>
 
+      </div>
+      <br />
+      <button onClick={setMariage}>
+        Mariage
+      </button>
       <h3 className="consecration-religie">Consecration religieuse</h3>
       <div className="flex-box3">
         <div className="flex-container-9">
@@ -319,14 +411,11 @@ const App = () => {
 
       <div className="flex-container-17">
       </div>
-      <button onClick={setMembre}>
-        inscrire
-      </button>
       <div>{success}</div>
       <div>{error}</div>
-      
-      <div id="Tous les membres">
-        <h2>Liste des tous les membres</h2>
+
+      <div id="AllMembers">
+        <h2 id="listeTitre">Liste des tous les membres</h2>
         <button onClick={getAllMembre}>voir tous les membre</button>
         <div>
           <table>
@@ -352,14 +441,40 @@ const App = () => {
           </table>
         </div>
       </div>
-      <div id="Rechercher membre">
-        <h2>
+      <div id="SearchSection">
+        <h2 id="rechercheTitre">
           Rechercher un membre de paroisse
         </h2>
-        <input type="text" value={identificateur} placeholder="Entrer l'identificateur du membre" 
-        onChange={(e) => setIdentificateur(e.target.value)} />
+        <input type="text" value={identificateur} placeholder="Entrer l'identificateur du membre"
+          onChange={(e) => setIdentificateur(e.target.value)} />
         <button onClick={getMembre}>Rechercher </button>
 
+        <div id="resultat">
+          <p>Nom: {singlePerson.nom}</p>
+          <p>Prenom: {singlePerson.prenom}</p>
+          <p>Pere: {singlePerson.pere}</p>
+          <p>Mere: {singlePerson.mere}</p>
+          <p>Naissance: {singlePerson.naissance}</p>
+          <p>Bapteme: {sacrementB.bapteme}</p>
+          <p>Lieu de bapteme: {sacrementB.lieuB}</p>
+          <p>Date du bapteme: {sacrementB.dateB}</p>
+          <p>Numero de Bapteme: {sacrementB.numeroB}</p>
+          <p>Parrain(marraine): {sacrementB.parrainB}</p>
+          <p>Suppletion: {sacrementB.suppletionB}</p>
+          <p>Marié: {sacrementM.mariage}</p>
+          <p>numero du mariage: {sacrementM.numeroM}</p>
+          <p>Paroisse du mariage: {sacrementM.paroisseM}</p>
+          <p>Partenaire: {sacrementM.partenaireM}</p>
+          <p>lieu et date de son bapteme : {sacrementM.lieudateBaptPartenaireM}</p>
+          <p>numero de son bapteme: {sacrementM.numeroBaptPartenaireM}</p>
+          <p>Benediction nuptiale: {sacrementM.dateBenedictionM}</p>
+
+
+
+          
+
+
+        </div>
       </div>
     </div>
   );

@@ -106,3 +106,43 @@ input {
 .consecration-religie, .mariage {
   padding-left: 10px;
 }
+#rechercheTitre, #listeTitre {
+  margin-top: 150px;
+  text-align: center;
+}
+table, th, td {
+  border: 3px solid rgb(24, 6, 56);
+  border-collapse: collapse;
+  padding: 15px;
+}
+table {
+  margin-left: 350px;
+  text-align: center;
+}
+#AllMembers, #SearchSection {
+  display: flex;
+  flex-direction: column;
+}
+#AllMembers button {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+}
+#SearchSection p {
+  text-align: center;
+}
+#SearchSection input {
+  margin: 0 auto;
+  margin-bottom: 40px;
+  width: 300px;
+  text-align: center;
+}
+#SearchSection button {
+  margin: 0 auto;
+  margin-bottom: 10px;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+}

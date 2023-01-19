@@ -43,14 +43,13 @@ contract Diocese {
     }
     struct remariage {
         string id;
-        string lieuDecespartM;
-        string dateDecespartM;
-        string lieuRemariage;
-        string dateRemariage;
-        string numeroRemariage;
-        string partenaireRemariage;
-        string lieudateBaptPartenaireR;
-        string numeroBaptPartenaireR;
+        string lieudateDecespartM;
+        address paroisseRM;
+        string dateRM;
+        string numeroRM;
+        string partenaireRM;
+        string lieudateBaptPartenaireRM;
+        string numeroBaptPartenaireRM;
     }
     struct consecration {
         string id;
@@ -97,9 +96,10 @@ contract Diocese {
         paroisse1 = msg.sender;
         paroisse2 = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
         paroisse3 = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
-        /*
+        
         paroisse4 = 0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB;
         paroisse5 = 0x617F2E2fD72FD9D5503197092aC168c91465E7f2;
+        /*
         paroisse6 = 0x17F6AD8Ef982297579C203069C1DbfFE4348c372;
         paroisse7 = 0x5c6B0f7Bf3E7ce046039Bd8FABdfD3f9F5021678;
         paroisse8 = 0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7;
@@ -137,6 +137,13 @@ contract Diocese {
         Mariages.push(mariage(id, true, numeroM, paroisse, partenaireM, lieudateBaptPartenaireM,
         numeroBaptPartenaireM, dateBenedictionM));
     }
+    function setRemariage (string memory lieudateDeces, string memory dateRM, string memory numeroRM,
+    string memory partenaireRM,string memory lieudateBaptPartenaireRM,string memory numeroBaptPartenaireRM,
+    string memory id) public OnlyParoisse{
+        address paroisse = msg.sender;
+        Remariages.push(remariage(id, lieudateDeces, paroisse, dateRM, numeroRM, partenaireRM, lieudateBaptPartenaireRM,
+        numeroBaptPartenaireRM));
+    }
 
     function getInfoById (string memory _id) public OnlyParoisse view returns(membre memory){
             for(uint i =0; i < Members.length; i++) {
@@ -146,7 +153,47 @@ contract Diocese {
             }
         
     }
+    function getMarById (string memory _id) public OnlyParoisse view returns(mariage memory){
+            for(uint i =0; i < Mariages.length; i++) {
+                if(keccak256(abi.encodePacked(Mariages[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Mariages[i];
+                }
+            }
+        
+    }
 
+    function getBaptById (string memory _id) public OnlyParoisse view returns(bapteme memory){
+            for(uint i =0; i < Baptemes.length; i++) {
+                if(keccak256(abi.encodePacked(Baptemes[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Baptemes[i];
+                }
+            }
+        
+    }
+    function getEuchById (string memory _id) public OnlyParoisse view returns(eucharistie memory){
+            for(uint i =0; i < Eucharisties.length; i++) {
+                if(keccak256(abi.encodePacked(Eucharisties[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Eucharisties[i];
+                }
+            }
+        
+    }
+    function getConfById (string memory _id) public OnlyParoisse view returns(confirmation memory){
+            for(uint i =0; i < Confirmations.length; i++) {
+                if(keccak256(abi.encodePacked(Confirmations[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Confirmations[i];
+                }
+            }
+        
+    }
+    function getRemarById (string memory _id) public OnlyParoisse view returns(remariage memory){
+            for(uint i =0; i < Remariages.length; i++) {
+                if(keccak256(abi.encodePacked(Remariages[i].id)) == keccak256(abi.encodePacked(_id))) {
+                    return Remariages[i];
+                }
+            }
+        
+    }
     function getAllMember () public OnlyParoisse view returns(membre [] memory) {
        
             return Members;

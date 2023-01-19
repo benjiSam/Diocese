@@ -2,14 +2,23 @@ require("@nomicfoundation/hardhat-toolbox");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.7",
-  paths:{
+  solidity: {
+    version: "0.8.7",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
+  },
+  allowUnlimitedContractSize: true,
+  paths: {
     artifacts: './src/artifacts'
   },
   networks: {
     hardhat: {
-      chainId: 1337
-    }
+      chainId: 1337,
+    },
   }
 };
 
