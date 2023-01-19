@@ -66,9 +66,6 @@ const App = () => {
 
 
 
-
-
-
   const [error, setError] = useState('');
   const [errorMotif, setErrorMotif] = useState(''); /* erreur personaliser  */
   const [success, setSuccess] = useState('');
@@ -327,10 +324,9 @@ const App = () => {
       </button>
       <div>{success}</div>
       <div>{error}</div>
-      <div>
-        <button onClick={getMembre}>voir membre</button>
-      </div>
+      
       <div id="Tous les membres">
+        <h2>Liste des tous les membres</h2>
         <button onClick={getAllMembre}>voir tous les membre</button>
         <div>
           <table>

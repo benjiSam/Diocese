@@ -9,30 +9,40 @@ contract Diocese {
         string mere;
         string naissance;
         address paroisse;
-
+    }
+    struct bapteme {
+        string id;
         bool bapteme;
-        string lieuB;
+        address lieuB;
         string dateB;
         string numeroB;
         string parrainB;
         string suppletionB;
-
+    }
+    struct eucharistie{
+        string id;
         bool Eucaristie;
-        string lieuEu;
+        address lieuEu;
         string dateEu;
-
+    }
+    struct confirmation{
+        string id;
         bool confirmation;
-        string lieuCo;
+        address lieuCo;
         string dateCo;
-
+    }
+    struct mariage{
+        string id;
         bool mariage;
         string numeroM;
-        string paroisseM;
+        address paroisseM;
         string partenaireM;
         string lieudateBaptPartenaireM;
         string numeroBaptPartenaireM;
         string dateBenedictionM;
-
+    }
+    struct remariage {
+        string id;
         string lieuDecespartM;
         string dateDecespartM;
         string lieuRemariage;
@@ -41,7 +51,9 @@ contract Diocese {
         string partenaireRemariage;
         string lieudateBaptPartenaireR;
         string numeroBaptPartenaireR;
-
+    }
+    struct consecration {
+        string id;
         bool consecrationReligieuse;
         string vocationCR;
         string dateCR;
@@ -49,8 +61,15 @@ contract Diocese {
         string dateVoeux;
         string lieuVoeux;
     }
+    
     membre [] public Members;
-    sacrement [] internal Sacrement;
+    bapteme [] public Baptemes;
+    eucharistie [] public Eucharisties;
+    confirmation [] public Confirmations;
+    mariage [] public Mariages;
+    remariage [] public Remariages;
+    consecration [] public Consecrations;
+
     mapping(uint => membre) Membre;
     address paroisse1;
     address paroisse2;
@@ -96,9 +115,27 @@ contract Diocese {
         Members.push(membre(id, _nom, prenom,pere,mere,naissance,paroisse));
     }
 
-    function quickSetMember (string memory _nom) public OnlyParoisse{
+    function setBapteme (string memory dateB, string memory numeroB,
+                        string memory parrainB,string memory suppletionB, string memory id) public OnlyParoisse{
         address paroisse = msg.sender;
-        Members.push(membre("1", _nom, "Sam","Dad","Mum","25/12/1028", paroisse));
+        Baptemes.push(bapteme(id, true,paroisse, dateB,numeroB,parrainB,suppletionB));
+    }
+    function setEucharistie (string memory dateEu, string memory id) public OnlyParoisse{
+        address paroisse = msg.sender;
+        Eucharisties.push(eucharistie(id, true,paroisse, dateEu));
+    }
+    function setConfirmation (string memory dateCo,string memory id) public OnlyParoisse{
+        address paroisse = msg.sender;
+        Confirmations.push(confirmation(id, true,paroisse, dateCo));
+    }
+    
+
+    function setMariage (string memory numeroM, string memory partenaireM,
+    string memory lieudateBaptPartenaireM,string memory numeroBaptPartenaireM,
+    string memory dateBenedictionM, string memory id) public OnlyParoisse{
+        address paroisse = msg.sender;
+        Mariages.push(mariage(id, true, numeroM, paroisse, partenaireM, lieudateBaptPartenaireM,
+        numeroBaptPartenaireM, dateBenedictionM));
     }
 
     function getInfoById (string memory _id) public OnlyParoisse view returns(membre memory){
